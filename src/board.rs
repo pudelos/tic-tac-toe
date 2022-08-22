@@ -1,13 +1,8 @@
-use crate::types::Fields;
+use crate::types::{Fields, N};
 
 pub fn is_winner(fields: &Fields) -> u8 {
-	const N: usize = 3;
-	let values = [
-		columns(&fields, N),
-		rows(&fields, N),
-		left_cross(&fields, N),
-		righ_cross(&fields, N),
-	];
+	let args = (fields, N as usize);
+	let values = [columns(args), rows(args), left_cross(args), righ_cross(args)];
 
 	let max = values.iter().max();
 
@@ -18,7 +13,7 @@ pub fn is_winner(fields: &Fields) -> u8 {
 }
 
 // check rows
-fn rows(fields: &Fields, n: usize) -> u8 {
+fn rows((fields, n): (&Fields, usize)) -> u8 {
 	for row in fields {
 		let mut found = true;
 		let compare: u8 = row[0];
@@ -38,7 +33,7 @@ fn rows(fields: &Fields, n: usize) -> u8 {
 }
 
 // check columns
-fn columns(fields: &Fields, n: usize) -> u8 {
+fn columns((fields, n): (&Fields, usize)) -> u8 {
 	for i in 0..n {
 		let mut found = true;
 		let compare: u8 = fields[0][i];
@@ -58,7 +53,7 @@ fn columns(fields: &Fields, n: usize) -> u8 {
 }
 
 // check left cross
-fn left_cross(fields: &Fields, n: usize) -> u8 {
+fn left_cross((fields, n): (&Fields, usize)) -> u8 {
 	let mut i = 1;
 	let mut j = 1;
 
@@ -81,7 +76,7 @@ fn left_cross(fields: &Fields, n: usize) -> u8 {
 	0
 }
 
-fn righ_cross(fields: &Fields, n: usize) -> u8 {
+fn righ_cross((fields, n): (&Fields, usize)) -> u8 {
 	let mut i = 1;
 	let mut j = n - 2;
 
